@@ -94,12 +94,7 @@
 						renderer: usStatesRenderer,
 						popupTemplate: statesLayerPopup,
 						opacity: 0.5
-					});
-
-	      			var usCountiesPopup = {
-	      				name: "{NAME}",
-	      				content: "<b>{NAME} County</b>"
-	      			}  
+					});  
 	      
 	      			var usCountiesRenderer = {
 	      				type: "simple",
@@ -112,7 +107,38 @@
 				      			width: 1
 				      		}
 				      	}
-			      	}      
+			      	}
+
+	      			var usCountiesPopup = {
+	      				title: "{NAME} County",
+	      				content: getDataCounty,
+	      				outFields: ["*"]
+	      			}
+
+					function getDataCounty(target) {
+						console.log(target);
+						var stateStr = target.graphic.attributes.STATE.toString().padStart(2, "0");
+						var countyStr = target.graphic.attributes.COUNTY.toString().padStart(3, "0");
+						return axios.get(`https://api.census.gov/data/2013/language?get=EST,LANLABEL,NAME&for=county:${countyStr}&in=state:${stateStr}&LAN7&key=6db9473ea3ef3b748670c6f693492afab71e3796`)
+						.then(function(response) {
+							console.log(response);
+							if (response.status === 204) {
+								dataContent = `
+									<b>This data is not available for ${target.graphic.attributes.NAME} County
+								`
+							} else {
+			            		var dataContent = `
+			            			<p><b>${response.data[1][1]}</b> : ${response.data[1][0]}</p>
+			            			<p><b>${response.data[2][1]}</b> : ${response.data[2][0]}</p>
+			            			<p><b>${response.data[3][1]}</b> : ${response.data[3][0]}</p>
+			            			<p><b>${response.data[4][1]}</b> : ${response.data[4][0]}</p>
+			            			<p><b>${response.data[5][1]}</b> : ${response.data[5][0]}</p>
+			            			<p><b>${response.data[6][1]}</b> : ${response.data[6][0]}</p>
+			            		`;
+		            		}
+		            		return dataContent;
+	        			})
+        			}
 	      
 					var countiesLayer = new FeatureLayer({
 						url: "https://services5.arcgis.com/Nj9ZZsOWvT9Qil9m/arcgis/rest/services/us_counties/FeatureServer",
