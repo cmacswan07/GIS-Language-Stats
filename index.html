@@ -72,12 +72,17 @@
 					function getData(target) {
 						return axios.get(`https://api.census.gov/data/2013/language?get=EST,LANLABEL,NAME&for=state:06&LAN7&key=6db9473ea3ef3b748670c6f693492afab71e3796`)
 						.then(function(response) {
-
-	            		console.log(response);
-	            		var dataContent = `
-	            			<p>${response.data[1][2]}</p>;
-	            		`;
-	            		return dataContent
+							console.log(target);
+							console.log(target.graphic);
+							console.log(target.graphic.attributes);
+							console.log(target.graphic.attributes.NAME);
+							console.log(target.graphic.attributes.STATE);
+							// console.log(target.graphic.STATE);
+		            		// console.log(response);
+		            		var dataContent = `
+		            			<p>${response.data[1][2]}</p>;
+		            		`;
+		            		return dataContent
 	        			})
 					}
 
