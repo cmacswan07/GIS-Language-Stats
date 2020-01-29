@@ -1,4 +1,4 @@
-# 39dn_t2
+# GIS Language Stats
 
 A GIS app made using ArcGIS' JavaScript API. Everything for the app is in index.html, so nothing needs to be executed or compiled to run the application.
 
