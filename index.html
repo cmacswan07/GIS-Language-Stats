@@ -73,11 +73,8 @@
 
           function getDataState(target) {
             var stateStr = target.graphic.attributes.STATE.toString().padStart(2, "0");
-            console.log(stateStr);
-            console.log(typeof stateStr);
             return axios.get(`https://api.census.gov/data/2013/language?get=EST,LANLABEL,NAME&for=state:${stateStr}&LAN7&key=6db9473ea3ef3b748670c6f693492afab71e3796`)
             .then(function(response) {
-              console.log(response);
               var dataContent = `
                 <p><b>${response.data[1][1]}</b> : ${response.data[1][0]}</p>
                 <p><b>${response.data[2][1]}</b> : ${response.data[2][0]}</p>
@@ -117,12 +114,10 @@
           };
 
           function getDataCounty(target) {
-            console.log(target);
             var stateStr = target.graphic.attributes.STATE.toString().padStart(2, "0");
             var countyStr = target.graphic.attributes.COUNTY.toString().padStart(3, "0");
             return axios.get(`https://api.census.gov/data/2013/language?get=EST,LANLABEL,NAME&for=county:${countyStr}&in=state:${stateStr}&LAN7&key=6db9473ea3ef3b748670c6f693492afab71e3796`)
             .then(function(response) {
-              console.log(response);
               if (response.status === 204) {
                 dataContent = `
                   <b>This data is not available for ${target.graphic.attributes.NAME} County</b>
